@@ -1,7 +1,7 @@
 streamlit==1.35.0
 torch==2.5.1
 facenet-pytorch==2.5.3
+Pillow
 numpy
-pillow
 scikit-learn
 matplotlib
