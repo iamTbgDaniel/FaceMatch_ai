@@ -8,7 +8,7 @@
 
 - Téléversement ou capture d’image via **webcam**
 - Détection automatique de visages avec **MTCNN**
-- Calcul de similarité via **distance euclidienne**
+- Calcul de similarité via **la similarité cosinus**
 - Alerte en cas de visage manquant ou de plusieurs visages
 - Interface utilisateur fluide et responsive grâce à Streamlit
 
@@ -56,13 +56,10 @@ streamlit run main.py
 
 ## Exemple de fonctionnement
 
-- L'utilisateur charge deux images ou utilise la webcam
-
-- L’application détecte automatiquement les visages
-
-- Un score de similarité (distance euclidienne) est    affiché
-
-- Si la distance est inférieure à 1.0111, les visages sont considérés comme identiques
+    - L'utilisateur charge deux images ou utilise la webcam
+    - L’application détecte automatiquement les visages
+    - Un score de similarité (cosin similarity) est    affiché
+    - Si la distance est superieure à 0.7, les visages sont considérés comme identiques
 
 Auteur:
 Daniel TSHIBANGU
