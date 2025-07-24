@@ -8,8 +8,8 @@ import base64
 
 
 # Initialisation des modèles
-model = InceptionResnetV1(pretrained='vggface2').eval()
-detector = MTCNN(image_size=160, margin=20, post_process=True, keep_all=True)
+model = InceptionResnetV1(pretrained='vggface2').eval() # Modèle de reconnaissance faciale
+detector = MTCNN(image_size=160, margin=20, post_process=True, keep_all=True) # Détecteur de visages
 
 # ---------- UTILITAIRES ----------
 
@@ -41,10 +41,13 @@ def add_blurred_bg(image_file):
         unsafe_allow_html=True
     )
 
-def euclidean_distance(emb1, emb2):
-    return np.linalg.norm(emb1 - emb2)
+#def euclidean_distance(emb1, emb2):# Fonction pour calculer la distance euclidienne entre deux embeddings
+    #return np.linalg.norm(emb1 - emb2)
 
-def select_face(image, label):
+def cosine_similarity(emb1, emb2):
+    return np.dot(emb1, emb2)  # Produit scalaire entre deux vecteurs unitaires
+
+def select_face(image, label):# Fonction pour sélectionner un visage dans une image
     faces = detector(image)
     if faces is None:
         st.error(f"Aucun visage détecté dans {label} !")
@@ -85,7 +88,7 @@ if page == "Accueil":
     <ul style='color: white; font-size: 16px;'>
         <li> Chargement d'images ou capture via webcam</li>
         <li> Détection automatique de visage (MTCNN)</li>
-        <li> Calcul de similarité avec distance euclidienne</li>
+        <li> Calcul de similarité avec cosin similarity</li>
         <li> Avertissement en cas d’absence ou de multiples visages</li>
         <li> Interface intuitive et moderne</li>
     </ul>
@@ -100,11 +103,6 @@ if page == "Accueil":
         4️⃣ Une distance est affichée avec un verdict clair</p>
     </div>
     """, unsafe_allow_html=True)
-
-    
-    if st.button("Commencer la vérification"):
-        st.session_state.page = "Vérification faciale"
-        st.rerun() 
 
     st.markdown("---")
     st.markdown("<p style='text-align:center; color:white;'>Copyright © 2025 - Application IA FaceMatch | Daniel TSHIBANGU</p>", unsafe_allow_html=True)
@@ -148,11 +146,11 @@ elif page == "Vérification faciale":
                 emb2 = select_face(image2, "Image 2")
 
             if emb1 is not None and emb2 is not None:
-                distance = euclidean_distance(emb1, emb2)
-                st.success(f"Distance euclidienne : {distance:.4f}")
+                similarity = cosine_similarity(emb1, emb2)
+                st.success(f"Similarité cosinus : {similarity:.4f}")
 
-                threshold = 1.0100
-                if distance < threshold:
+                threshold = 0.7  # Plus le score est proche de 1, plus les visages sont similaires
+                if similarity > threshold:
                     st.markdown("<h3 style='color: green;'>Même personne ✅</h3>", unsafe_allow_html=True)
                 else:
                     st.markdown("<h3 style='color: red;'>Personnes différentes ❌</h3>", unsafe_allow_html=True)
