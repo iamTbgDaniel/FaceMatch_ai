@@ -149,7 +149,7 @@ elif page == "Vérification faciale":
                 similarity = cosine_similarity(emb1, emb2)
                 st.success(f"Similarité cosinus : {similarity:.4f}")
 
-                threshold = 0.7  # Plus le score est proche de 1, plus les visages sont similaires
+                threshold = 0.67  # Plus le score est proche de 1, plus les visages sont similaires
                 if similarity > threshold:
                     st.markdown("<h3 style='color: green;'>Même personne ✅</h3>", unsafe_allow_html=True)
                 else:
